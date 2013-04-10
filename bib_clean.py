@@ -36,7 +36,10 @@ def unbloat(file_name, fields_to_delete):
     for line in lines:
         line_may_stay = True
         for del_field in fields_to_delete:
-            if(del_field in line):
+            # in order to ignore a line, make sure it contains an unwanted field
+            # as well as a '{' character right of it - this should reduce false
+            # detections
+            if(del_field in line and line.find(del_field) < line.find('{')):
                 line_may_stay = False
 
         if(line_may_stay):
